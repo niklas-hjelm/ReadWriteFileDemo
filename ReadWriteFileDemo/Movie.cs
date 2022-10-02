@@ -2,7 +2,7 @@
 
 public class Movie
 {
-    public string Name { get; set; }  = string.Empty;
+    public string Title { get; set; } = string.Empty;
     public double Length { get; set; }
     public string Description { get; set; } = string.Empty;
     public IEnumerable<Genres> Genres { get; set; } = new List<Genres>();
@@ -11,7 +11,7 @@ public class Movie
     public override string ToString()
     {
         var output = string.Empty;
-        output += $"Name: {Name}\n";
+        output += $"Title: {Title}\n";
         output += $"Length: {Length} hours\n";
         output += $"Description: {Description}\n";
         output += $"Genres: ";
