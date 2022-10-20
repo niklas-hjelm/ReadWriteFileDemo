@@ -1,4 +1,6 @@
-﻿namespace ReadWriteFileDemo;
+﻿using System.Runtime.Serialization;
+
+namespace ReadWriteFileDemo;
 
 public class Movie
 {
