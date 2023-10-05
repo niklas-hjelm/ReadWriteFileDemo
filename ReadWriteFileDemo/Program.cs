@@ -63,7 +63,46 @@ if (File.Exists(path))
             string lengthText = length.Split(' ')[0];
             tempMovie.Length = double.Parse(lengthText);
 
-            tempMovie.Genres = new List<Genres>(); // Fixa
+            string[] genresText = genres.Split(',');
+            List<Genres> genresList = new List<Genres>();
+            foreach (var genre in genresText)
+            {
+                if (genre == "")
+                {
+                    break;
+                }
+
+                genresList.Add(Enum.Parse<Genres>(genre));
+            }
+
+            tempMovie.Genres = genresList;
+            movieList.Add(tempMovie);
+        }
+    }
+
+    var sciFiMovieTitles = movieList
+        .Where(m=> m.Genres.Any(g => g == Genres.SciFi))
+        .Select(m=> m.Title);
+
+    var sciFiMovieLengths = movieList
+        .Where(m => m.Genres.Any(g => g == Genres.SciFi))
+        .Select(m => m.Length);
+
+    foreach (var sciFiMovieTitle in sciFiMovieTitles)
+    {
+        Console.WriteLine(sciFiMovieTitle);
+    }
+
+    Console.WriteLine("---------------------------------");
+
+    foreach (var movie in movieList)
+    {
+        foreach (var movieGenre in movie.Genres)
+        {
+            if (movieGenre == Genres.SciFi)
+            {
+                Console.WriteLine(movie.Title);
+            }
         }
     }
 }
