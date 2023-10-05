@@ -8,5 +8,7 @@ public enum Genres
     Drama,
     Horror,
     Thriller,
-    Fantasy
+    Fantasy,
+    Adventure,
+    Documentary
 }

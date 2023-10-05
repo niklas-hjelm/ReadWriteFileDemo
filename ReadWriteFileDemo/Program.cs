@@ -1,108 +1,40 @@
 ﻿using ReadWriteFileDemo;
 
-var movieDb = new MovieCollection();
+var movieManager = new MovieManager();
 
 //Path.Combine används för att bygga sökvägar på ett korrekt sätt.
 //I Environment kan man hitta alla standard-mappar i en windowsdator. Tex. AppData, Desktop, MyDocuments mm.
 var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NiklasNet23");
 Directory.CreateDirectory(directory);
-var path = Path.Combine(directory, "Demo.txt");
 
-//File.Exists kan användas för att kontrollera ifall en fil finns på en given sökväg
-if (!File.Exists(path))
+var genres = Enum.GetValues<Genres>();
+
+foreach (var genre in genres)
 {
-    //StreamWriter används för att öppna en fil och skriva till den.
-    //nyckelordet using används här för att på ett säkert sätt stänga den öppnade filen så den inte är låst efter operationen
-    using StreamWriter sw = new StreamWriter(path);
-    foreach (var movie in movieDb.Movies)
-    {
-        //WriteLine används för att skriva en ny rad.
-        sw.WriteLine(movie);
-    }
-    sw.Close();
+    var path = Path.Combine(directory, $"{genre}.txt");
+    movieManager.CreateMovieFile(path, genre);
 }
 
-if (File.Exists(path))
-{
-    List<Movie> movieList = new List<Movie>();
-    string? line = "";
 
-    string title = "";
-    string length = "";
-    string description = "";
-    string genres = "";
+var sciFiPath = Path.Combine(directory, "SciFi.txt");
+var sciFiMovies = movieManager.ReadMovieFile(sciFiPath);
 
-    //StreamReader används för att öppna en fil och läsa från den.
-    //nyckelordet using används här för att på ett säkert sätt stänga den öppnade filen så den inte är låst efter operationen
-    using StreamReader sr = new StreamReader(path);
-    //ReadLine() läser nästa rad i filen
-    while ((line = sr.ReadLine()) != null)
-    {
-        if (line.StartsWith("Title: "))
-        {
-            title = line.Substring(7);
-        }
-        else if (line.StartsWith("Length: "))
-        {
-            length = line.Substring(8);
-        }
-        else if (line.StartsWith("Description: "))
-        {
-            description = line.Substring(13);
-        }
-        else if (line.StartsWith("Genres: "))
-        {
-            genres = line.Substring(8);
-        }
-        else
-        {
-            Movie tempMovie = new Movie();
-            tempMovie.Title = title;
-            tempMovie.Description = description;
+var actionPath = Path.Combine(directory, "Action.txt");
+var actionMovies = movieManager.ReadMovieFile(actionPath);
 
-            string lengthText = length.Split(' ')[0];
-            tempMovie.Length = double.Parse(lengthText);
+var comedyPath = Path.Combine(directory, "Comedy.txt");
+var comedyMovies = movieManager.ReadMovieFile(comedyPath);
 
-            string[] genresText = genres.Split(',');
-            List<Genres> genresList = new List<Genres>();
-            foreach (var genre in genresText)
-            {
-                if (genre == "")
-                {
-                    break;
-                }
+var dramaPath = Path.Combine(directory, "Drama.txt");
+var dramaMovies = movieManager.ReadMovieFile(dramaPath);
 
-                genresList.Add(Enum.Parse<Genres>(genre));
-            }
+var horrorPath = Path.Combine(directory, "Horror.txt");
+var horrorMovies = movieManager.ReadMovieFile(horrorPath);
 
-            tempMovie.Genres = genresList;
-            movieList.Add(tempMovie);
-        }
-    }
+var thrillerPath = Path.Combine(directory, "Thriller.txt");
+var thrillerMovies = movieManager.ReadMovieFile(thrillerPath);
 
-    var sciFiMovieTitles = movieList
-        .Where(m=> m.Genres.Any(g => g == Genres.SciFi))
-        .Select(m=> m.Title);
+var fantasyPath = Path.Combine(directory, "Fantasy.txt");
+var fantasyMovies = movieManager.ReadMovieFile(fantasyPath);
 
-    var sciFiMovieLengths = movieList
-        .Where(m => m.Genres.Any(g => g == Genres.SciFi))
-        .Select(m => m.Length);
-
-    foreach (var sciFiMovieTitle in sciFiMovieTitles)
-    {
-        Console.WriteLine(sciFiMovieTitle);
-    }
-
-    Console.WriteLine("---------------------------------");
-
-    foreach (var movie in movieList)
-    {
-        foreach (var movieGenre in movie.Genres)
-        {
-            if (movieGenre == Genres.SciFi)
-            {
-                Console.WriteLine(movie.Title);
-            }
-        }
-    }
-}
+Console.WriteLine();

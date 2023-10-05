@@ -1,6 +1,6 @@
 ﻿namespace ReadWriteFileDemo;
 
-public class Movie
+public record Movie : IEqualityComparer<Movie>
 {
     public string Title { get; set; } = string.Empty;
     public double Length { get; set; }
@@ -21,5 +21,19 @@ public class Movie
         }
         output += "\n";
         return output;
+    }
+
+    public bool Equals(Movie x, Movie y)
+    {
+        if (ReferenceEquals(x, y)) return true;
+        if (ReferenceEquals(x, null)) return false;
+        if (ReferenceEquals(y, null)) return false;
+        if (x.GetType() != y.GetType()) return false;
+        return x.Title == y.Title && x.Length.Equals(y.Length) && x.Description == y.Description && x.Genres.Equals(y.Genres);
+    }
+
+    public int GetHashCode(Movie obj)
+    {
+        return HashCode.Combine(obj.Title, obj.Length, obj.Description, obj.Genres);
     }
 }
