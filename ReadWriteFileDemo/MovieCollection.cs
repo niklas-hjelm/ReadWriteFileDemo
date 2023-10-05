@@ -13,9 +13,9 @@ public class MovieCollection
 
     private void PopulateMovies()
     {
-        _movies = new()
+        _movies = new List<Movie>()
         {
-            new ()
+            new Movie()
             {
                 Title = "Scream",
                 Description = "A year after the murder of her mother, a teenage girl is terrorized by a new killer, " +
