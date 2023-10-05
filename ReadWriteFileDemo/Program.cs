@@ -38,3 +38,5 @@ var fantasyPath = Path.Combine(directory, "Fantasy.txt");
 var fantasyMovies = movieManager.ReadMovieFile(fantasyPath);
 
 Console.WriteLine();
+
+HashSet<Movie> filmer = new HashSet<Movie>(new MovieEqualityComparer());
